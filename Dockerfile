@@ -1,5 +1,5 @@
 FROM openjdk:17-alpine
-ARG JAR_FILE=build/libs/app-0.0.1.jar
-COPY ./build/libs/app-0.0.1.jar app.jar
+ARG JAR_FILE=target/savvy-0.0.1-SNAPSHOT.jar
+COPY ./target/savvy-0.0.1-SNAPSHOT.jar savvy.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/savvy.jar"]
