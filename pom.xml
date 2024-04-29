@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.ffhs</groupId>
-	<artifactId>savvy</artifactId>
+	<artifactId>savvy-spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>savvy</name>
+	<name>savvy-spring</name>
 	<description>savvy project for savvy people using spring boot</description>
 	<properties>
 		<java.version>17</java.version>
