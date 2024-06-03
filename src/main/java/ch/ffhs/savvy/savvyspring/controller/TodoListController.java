@@ -1,9 +1,7 @@
 package ch.ffhs.savvy.savvyspring.controller;
 
-import ch.ffhs.savvy.savvyspring.jooq.tables.Todo;
 import ch.ffhs.savvy.savvyspring.model.Todolist;
 import ch.ffhs.savvy.savvyspring.service.TodoListService;
-import org.jooq.impl.QOM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
