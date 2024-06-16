@@ -13,10 +13,19 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>savvy-spring</name>
 	<description>Savvy</description>
+
 	<properties>
 		<java.version>17</java.version>
 		<vaadin.version>24.4.1</vaadin.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>Vaadin Directory</id>
+			<url>https://maven.vaadin.com/vaadin-addons</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -26,7 +35,6 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -46,6 +54,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.crudui</groupId>
+			<artifactId>crudui</artifactId>
+			<version>7.1.0</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -75,46 +88,20 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.jooq</groupId>
-				<artifactId>jooq-codegen-maven</artifactId>
-				<version>3.18.7</version>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>${vaadin.version}</version>
 				<executions>
 					<execution>
-						<id>jooq-codegen</id>
-						<phase>generate-sources</phase>
+						<id>frontend</id>
+						<phase>compile</phase>
 						<goals>
-							<goal>generate</goal>
+							<goal>prepare-frontend</goal>
 						</goals>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.postgresql</groupId>
-						<artifactId>postgresql</artifactId>
-						<version>42.6.0</version>
-					</dependency>
-				</dependencies>
 				<configuration>
-					<jdbc>
-						<driver>org.postgresql.Driver</driver>
-						<url>jdbc:postgresql://postgres-container:5432/postgres</url>
-						<!--suppress UnresolvedMavenProperty -->
-						<user>postgres</user>
-						<!--suppress UnresolvedMavenProperty -->
-						<password>postgres</password>
-					</jdbc>
-					<generator>
-						<database>
-							<name>org.jooq.meta.postgres.PostgresDatabase</name>
-							<includes>PUBLIC.*</includes>
-							<excludes/>
-							<inputSchema>public</inputSchema>
-						</database>
-						<target>
-							<packageName>ch.ffhs.savvy.savvy_spring.jooq</packageName>
-							<directory>src/main/java</directory>
-						</target>
-					</generator>
+					<frontendHotdeploy>true</frontendHotdeploy>
 				</configuration>
 			</plugin>
 		</plugins>

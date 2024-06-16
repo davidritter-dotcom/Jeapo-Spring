@@ -30,7 +30,7 @@ class SavvySpringApplicationTests {
 	@Test
 	void find_all_Todos() {
 		List<Todo> users = todoService.getAll();
-		assertThat(users.size()).isEqualTo(3);
+		assertThat(users.size()).isEqualTo(4);
 	}
 
 	@Test
