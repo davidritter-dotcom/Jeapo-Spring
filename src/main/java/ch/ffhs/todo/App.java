@@ -1,4 +1,4 @@
-package ch.ffhs.todo2;
+package ch.ffhs.todo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

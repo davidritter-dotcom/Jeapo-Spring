@@ -1,9 +1,9 @@
-package ch.ffhs.todo2.controller;
+package ch.ffhs.todo.controller;
 
-import ch.ffhs.todo2.service.NoteService;
-import ch.ffhs.todo2.service.UserService;
-import ch.ffhs.todo2.model.Note;
-import ch.ffhs.todo2.model.User;
+import ch.ffhs.todo.service.NoteService;
+import ch.ffhs.todo.service.UserService;
+import ch.ffhs.todo.model.Note;
+import ch.ffhs.todo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

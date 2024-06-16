@@ -1,4 +1,4 @@
-package ch.ffhs.todo2.model;
+package ch.ffhs.todo.model;
 
 import lombok.Data;
 import jakarta.persistence.*;

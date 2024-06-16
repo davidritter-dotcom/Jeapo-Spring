@@ -1,4 +1,4 @@
-package ch.ffhs.todo2.controller;
+package ch.ffhs.todo.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(){
-        return "hello hello : ) ";
+        return "Welcome!!!! add /api/users/me   to path to test login functionality  :) ";
     }
 }

@@ -1,7 +1,7 @@
-package ch.ffhs.todo2.service;
+package ch.ffhs.todo.service;
 
-import ch.ffhs.todo2.model.User;
-import ch.ffhs.todo2.repository.UserRepo;
+import ch.ffhs.todo.model.User;
+import ch.ffhs.todo.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

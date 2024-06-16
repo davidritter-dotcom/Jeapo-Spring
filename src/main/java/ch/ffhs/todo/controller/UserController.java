@@ -1,12 +1,16 @@
-package ch.ffhs.todo2.controller;
+package ch.ffhs.todo.controller;
 
-import ch.ffhs.todo2.service.UserService;
-import ch.ffhs.todo2.model.User;
+import ch.ffhs.todo.service.UserService;
+import ch.ffhs.todo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -15,6 +19,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -29,6 +34,11 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/me")
+    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
+        return Collections.singletonMap(principal.getName(), principal.getAttribute("name"));
     }
 
     @PostMapping
