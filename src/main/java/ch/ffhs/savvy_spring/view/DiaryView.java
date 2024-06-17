@@ -25,7 +25,6 @@ public class DiaryView extends VerticalLayout {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${diary.api.url}")
     private String diaryApiUrl;
 
     private Grid<DiaryEntry> grid = new Grid<>(DiaryEntry.class);
