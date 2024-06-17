@@ -1,23 +1,23 @@
 package ch.ffhs.savvy_spring.view;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.VaadinServletRequest;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 public class MainLayout extends AppLayout {
+
+    private static final String LOGOUT_SUCCESS_URL = "/login";
     public MainLayout() {
         Header header = new Header();
-        /*header.addClassNames(
-                LumoUtility.BoxSizing.BORDER,
-                LumoUtility.Display.FLEX,
-                LumoUtility.Width.FULL,
-                LumoUtility.AlignItems.CENTER
-        );*/
         header.getStyle().set("display", "flex");
         header.getStyle().set("align-items", "center");
         header.getStyle().set("margin", "1rem");
@@ -57,7 +57,17 @@ public class MainLayout extends AppLayout {
         diaryLink.getStyle().set("font-size","1.2rem");
         list.add(todoLink, diaryLink);
 
-        header.add(layout, nav);
+        //Todo: Create a seperate user Session Bean to handle logout
+        Button logoutButton = new Button("Logout", click -> {
+            UI.getCurrent().getPage().setLocation(LOGOUT_SUCCESS_URL);
+            SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+            logoutHandler.logout(
+                    VaadinServletRequest.getCurrent().getHttpServletRequest(), null,
+                    null);
+        });
+        logoutButton.getStyle().set("margin-right","1rem");
+
+        header.add(layout, nav, logoutButton);
         addToNavbar(header);
     }
 }

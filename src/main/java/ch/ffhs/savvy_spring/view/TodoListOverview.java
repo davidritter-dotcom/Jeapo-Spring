@@ -13,26 +13,35 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 @Route(value = "todolists", layout = MainLayout.class)
+@PermitAll
 public class TodoListOverview extends VerticalLayout {
 
     @Autowired
     private TodoListService todoListService;
-
     private Grid<Todolist> grid = new Grid<>(Todolist.class);
     private TextField nameField = new TextField("Name");
     private Button addButton = new Button("Add Todo List");
+    private final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    private final OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
 
     public TodoListOverview(TodoListService todoListService) {
         this.todoListService = todoListService;
 
+        //Todo: put this in separate class
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
+
         addButton.addClickListener(e -> {
             Todolist todolist = new Todolist();
             todolist.setName(nameField.getValue());
-            //todo add real user id
-            todolist.setUserId(1);
+            todolist.setUserId(principal.getName());
             todoListService.create(todolist);
             updateGrid();
             nameField.clear();
@@ -78,7 +87,7 @@ public class TodoListOverview extends VerticalLayout {
     }
 
     private void updateGrid() {
-        grid.setItems(todoListService.getAll());
+        grid.setItems(todoListService.getByUserId(principal.getName()));
     }
 
     private void openEditDialog(Todolist todolist) {

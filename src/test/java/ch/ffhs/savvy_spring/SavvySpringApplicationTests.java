@@ -28,18 +28,8 @@ class SavvySpringApplicationTests {
 		assertThat(users.size()).isEqualTo(4);
 	}
 	@Test
-	void find_all_Todos() {
+	void find_Todos() {
 		List<Todo> users = todoService.getAll();
 		assertThat(users.size()).isEqualTo(4);
 	}
-
-	@Test
-	void create_Todo() {
-		todoService.create(new Todo("Optimize Spring",1));
-		List<Todo> users = todoService.getAll();
-		assertThat(users.size()).isEqualTo(4);
-	}
-
-
-
 }

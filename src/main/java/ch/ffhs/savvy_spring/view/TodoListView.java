@@ -16,10 +16,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Route(value = "todolist", layout = MainLayout.class)
+@PermitAll
 public class TodoListView extends VerticalLayout implements HasUrlParameter<Integer> {
 
     @Autowired
@@ -52,7 +54,7 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
         }).setWidth("10rem").setFlexGrow(0).setHeader("Edit");
 
         grid.addComponentColumn(todo -> {
-            Button deleteButton = new Button("Delete");
+            Button deleteButton = new Button("Done");
             deleteButton.addClickListener(e -> {
                 todoService.delete(todo.getId());
                 updateGrid();

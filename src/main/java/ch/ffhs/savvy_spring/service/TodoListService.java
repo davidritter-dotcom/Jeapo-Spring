@@ -19,7 +19,7 @@ public class TodoListService {
         return dsl.selectFrom(Tables.TODOLIST).fetchInto(Todolist.class);
     }
 
-    public List<Todolist> getByUserId(int userId) {
+    public List<Todolist> getByUserId(String userId) {
         return dsl.selectFrom(Tables.TODOLIST)
                 .where(Tables.TODOLIST.USER_ID.eq(userId))
                 .fetchInto(Todolist.class);
