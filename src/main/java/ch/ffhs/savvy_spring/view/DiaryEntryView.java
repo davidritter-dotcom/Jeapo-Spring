@@ -1,23 +1,8 @@
-package ch.ffhs.savvy_spring.view;
 
-import ch.ffhs.savvy_spring.jooq.model.tables.pojos.Todo;
-import ch.ffhs.savvy_spring.jooq.model.tables.pojos.Todolist;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "diaryentry", layout = MainLayout.class)
+/*@Route(value = "diaryentry", layout = MainLayout.class)
 @PermitAll
 public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Integer> {
 
@@ -86,4 +71,4 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<In
     }
 
 
-}
+}*/
