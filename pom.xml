@@ -191,7 +191,7 @@
 								</generate>
 								<target>
 									<packageName>ch.ffhs.savvy_spring.jooq.model</packageName>
-									<directory>target/generated-sources/jooq</directory>
+									<directory>src/main/java</directory>
 								</target>
 							</generator>
 						</configuration>

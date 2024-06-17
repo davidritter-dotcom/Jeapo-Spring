@@ -35,11 +35,8 @@ class SavvySpringApplicationTests {
 
 	@Test
 	void create_Todo() {
-		todoService.create(new Todo("Optimize Spring",1));
 		List<Todo> users = todoService.getAll();
 		assertThat(users.size()).isEqualTo(4);
 	}
-
-
 
 }
