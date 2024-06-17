@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 
 public class MainLayout extends AppLayout {
 
-    private static final String LOGOUT_SUCCESS_URL = "/login";
+    private static final String LOGOUT_SUCCESS_URL = "/";
     public MainLayout() {
         Header header = new Header();
         header.getStyle().set("display", "flex");
@@ -30,6 +30,9 @@ public class MainLayout extends AppLayout {
         H1 title = new H1("Savvy");
         title.getStyle().set("margin-left","1rem");
         title.addClassNames(LumoUtility.Margin.Vertical.MEDIUM, LumoUtility.Margin.End.AUTO, LumoUtility.FontSize.LARGE);
+        title.addClickListener(
+                e -> getUI().ifPresent(ui -> ui.navigate("/todolists"))
+        );
         layout.add(title);
 
         Nav nav = new Nav();

@@ -25,9 +25,8 @@ public class TodoListOverview extends VerticalLayout {
 
     @Autowired
     private TodoListService todoListService;
-    private Grid<Todolist> grid = new Grid<>(Todolist.class);
-    private TextField nameField = new TextField("Name");
-    private Button addButton = new Button("Add Todo List");
+    private final Grid<Todolist> grid = new Grid<>(Todolist.class);
+    private final TextField nameField = new TextField("Name");
     private final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     private final OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
 
@@ -38,6 +37,7 @@ public class TodoListOverview extends VerticalLayout {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
 
+        Button addButton = new Button("Add Todo List");
         addButton.addClickListener(e -> {
             Todolist todolist = new Todolist();
             todolist.setName(nameField.getValue());

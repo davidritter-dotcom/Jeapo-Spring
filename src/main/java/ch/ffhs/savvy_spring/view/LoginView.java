@@ -8,7 +8,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-@Route("login")
+@Route("")
 @PageTitle("Login")
 @AnonymousAllowed
 public class LoginView extends VerticalLayout {
@@ -18,16 +18,22 @@ public class LoginView extends VerticalLayout {
     public LoginView() {
         Anchor loginLink = new Anchor(OAUTH_URL, "Login with Google");
         loginLink.getStyle().set("text-decoration","none");
-        loginLink.getStyle().set("font-size","3rem");
+        loginLink.getStyle().set("font-size","2rem");
         loginLink.getStyle().set("color","black");
-        loginLink.getStyle().set("font-weight","500");
+        loginLink.getStyle().set("font-weight","400");
 
         // Instruct Vaadin Router to ignore doing SPA handling
         loginLink.setRouterIgnore(true);
 
         H1 logo = new H1("Savvy");
-        VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.add(logo, loginLink);
+        logo.getStyle().set("margin","auto");
+        logo.getStyle().set("font-weight","500");
+        logo.getStyle().set("font-size","4rem");
+        logo.getStyle().set("margin-bottom","2rem");
+        Div div = new Div();
+        div.getStyle().set("display","flex");
+        div.getStyle().set("flex-direction","column");
+        div.add(logo, loginLink);
 
         Div container = new Div();
         container.getStyle().set("width","100vw");
@@ -35,7 +41,7 @@ public class LoginView extends VerticalLayout {
         container.getStyle().set("display","flex");
         container.getStyle().set("justify-content","center");
         container.getStyle().set("align-items","center");
-        container.add(verticalLayout);
+        container.add(div);
 
         add(container);
     }

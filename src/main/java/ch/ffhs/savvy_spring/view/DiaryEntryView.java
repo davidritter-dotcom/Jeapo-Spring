@@ -2,13 +2,11 @@ package ch.ffhs.savvy_spring.view;
 
 import ch.ffhs.savvy_spring.jooq.model.tables.pojos.Todo;
 import ch.ffhs.savvy_spring.jooq.model.tables.pojos.Todolist;
-import ch.ffhs.savvy_spring.service.TodoListService;
-import ch.ffhs.savvy_spring.service.TodoService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,51 +17,24 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-@Route(value = "todolist", layout = MainLayout.class)
+@Route(value = "diaryentry", layout = MainLayout.class)
 @PermitAll
-public class TodoListView extends VerticalLayout implements HasUrlParameter<Integer> {
+public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Integer> {
 
     @Autowired
-    private TodoService todoService;
-    @Autowired
-    private TodoListService todoListService;
+    private DiaryService diaryService;
+    private DiaryEntry diaryentry;
 
-    private Todolist todolist;
-    private final Grid<Todo> grid = new Grid<>(Todo.class);
-    private final TextField contentField = new TextField("Content");
-    private final Button addButton = new Button("Add Todo");
     @Override
     public void setParameter(BeforeEvent event, Integer parameter) {
-        this.todolist = todoListService.getById(parameter);
-        addButton.addClickListener(e -> {
-            Todo todo = new Todo();
-            todo.setContent(contentField.getValue());
-            todo.setTodolistId(todolist.getId());
-            todoService.create(todo);
-            contentField.clear();
-            updateGrid();
-        });
+        this.diaryentry = diaryService.getById(parameter);
 
-        grid.setColumns("content");
-        grid.addComponentColumn(todo -> {
-            Button editButton = new Button("Edit");
-            editButton.addClickListener(
-                e -> openEditDialog(todo)
-            );
-            return editButton;
-        }).setWidth("10rem").setFlexGrow(0).setHeader("Edit");
+        Div displayedContent = new Div(diaryentry.getContent());
 
-        grid.addComponentColumn(todo -> {
-            Button deleteButton = new Button("Done");
-            deleteButton.addClickListener(e -> {
-                todoService.delete(todo.getId());
-                updateGrid();
-            });
-            return deleteButton;
-        }).setWidth("10rem").setFlexGrow(0).setHeader("Delete");
-
-        //add(new HorizontalLayout(contentField, addButton), grid);
+        Button editButton = new Button("Edit");
+        editButton.addClickListener(
+                e -> openEditDialog(diaryentry)
+        );
 
         HorizontalLayout addTodoLayout = new HorizontalLayout();
         addTodoLayout.setPadding(true);
@@ -71,7 +42,7 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
         addTodoLayout.getStyle().set("display","flex");
         addTodoLayout.getStyle().set("justify-content","center");
         addTodoLayout.getStyle().set("flex-grow","1");
-        addTodoLayout.add(contentField, addButton);
+        addTodoLayout.add(editButton);
 
         Button backButton = new Button("Back");
         backButton.addClickListener(
@@ -82,35 +53,28 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
         backbuttonContainer.getStyle().set("display","flex");
         backbuttonContainer.getStyle().set("width","100%");
 
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-
-        H2 pageTitle = new H2(getTodoListTitle());
+        H2 pageTitle = new H2(getDiaryEntryTitle());
         pageTitle.getStyle().set("margin","auto");
 
         VerticalLayout container = new VerticalLayout();
         container.getStyle().set("width","80vw");
         container.getStyle().set("margin","auto");
-        container.add(pageTitle, backbuttonContainer, grid);
+        container.add(pageTitle, backbuttonContainer, displayedContent);
 
         add(container);
-        updateGrid();
     }
 
-    private String getTodoListTitle() {
-        return todolist.getName();
+    private String getDiaryEntryTitle() {
+        return diaryentry.getTitle();
     }
 
-    private void updateGrid() {
-        grid.setItems(todoService.getByTodolistId(todolist.getId()));
-    }
-
-    private void openEditDialog(Todo todo) {
+    private void openEditDialog(DiaryEntry diaryentry) {
         Dialog dialog = new Dialog();
-        TextField editField = new TextField("Name");
-        editField.setValue(todo.getContent());
+        TextField editField = new TextField("Content");
+        editField.setValue(diaryentry.getContent());
         Button saveButton = new Button("Save", event -> {
-            todo.setContent(editField.getValue());
-            todoService.update(todo.getId(), todo);
+            diaryentry.setContent(editField.getValue());
+            diaryService.update(diaryentry.getId(), diaryentry);
             updateGrid();
             dialog.close();
         });
@@ -120,5 +84,6 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
         dialog.getFooter().add(saveButton);
         dialog.open();
     }
+
 
 }
