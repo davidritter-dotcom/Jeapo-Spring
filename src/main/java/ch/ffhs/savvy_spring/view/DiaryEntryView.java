@@ -1,74 +1,87 @@
+package ch.ffhs.savvy_spring.view;
 
+import ch.ffhs.savvy_spring.model.DiaryEntry;
+import ch.ffhs.savvy_spring.service.DiaryService;
+import ch.ffhs.savvy_spring.view.MainLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/*@Route(value = "diaryentry", layout = MainLayout.class)
+@Route(value = "diaryentry", layout = MainLayout.class)
 @PermitAll
-public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Integer> {
+public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Long> {
 
     @Autowired
     private DiaryService diaryService;
-    private DiaryEntry diaryentry;
+    private DiaryEntry diaryEntry;
 
     @Override
-    public void setParameter(BeforeEvent event, Integer parameter) {
-        this.diaryentry = diaryService.getById(parameter);
+    public void setParameter(BeforeEvent event, Long parameter) {
+        this.diaryEntry = diaryService.getDiaryEntry(parameter);
 
-        Div displayedContent = new Div(diaryentry.getContent());
+        if (diaryEntry == null) {
+            // Handle case where diary entry with given ID doesn't exist
+            return;
+        }
+
+        Div displayedContent = new Div(diaryEntry.getContent());
 
         Button editButton = new Button("Edit");
-        editButton.addClickListener(
-                e -> openEditDialog(diaryentry)
-        );
+        editButton.addClickListener(e -> openEditDialog(diaryEntry));
 
-        HorizontalLayout addTodoLayout = new HorizontalLayout();
-        addTodoLayout.setPadding(true);
-        addTodoLayout.setAlignItems(Alignment.BASELINE);
-        addTodoLayout.getStyle().set("display","flex");
-        addTodoLayout.getStyle().set("justify-content","center");
-        addTodoLayout.getStyle().set("flex-grow","1");
-        addTodoLayout.add(editButton);
+        HorizontalLayout actionButtonsLayout = new HorizontalLayout(editButton);
+        actionButtonsLayout.setPadding(true);
+        actionButtonsLayout.setAlignItems(Alignment.BASELINE);
+        actionButtonsLayout.getStyle().set("display", "flex");
+        actionButtonsLayout.getStyle().set("justify-content", "center");
+        actionButtonsLayout.getStyle().set("flex-grow", "1");
 
         Button backButton = new Button("Back");
-        backButton.addClickListener(
-                e -> getUI().ifPresent(ui -> ui.navigate(TodoListOverview.class))
-        );
+        backButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate(DiaryEntryView.class)));
         backButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        HorizontalLayout backbuttonContainer = new HorizontalLayout(backButton, addTodoLayout);
-        backbuttonContainer.getStyle().set("display","flex");
-        backbuttonContainer.getStyle().set("width","100%");
+
+        HorizontalLayout backbuttonContainer = new HorizontalLayout(backButton, actionButtonsLayout);
+        backbuttonContainer.getStyle().set("display", "flex");
+        backbuttonContainer.getStyle().set("width", "100%");
 
         H2 pageTitle = new H2(getDiaryEntryTitle());
-        pageTitle.getStyle().set("margin","auto");
+        pageTitle.getStyle().set("margin", "auto");
 
         VerticalLayout container = new VerticalLayout();
-        container.getStyle().set("width","80vw");
-        container.getStyle().set("margin","auto");
+        container.getStyle().set("width", "80vw");
+        container.getStyle().set("margin", "auto");
         container.add(pageTitle, backbuttonContainer, displayedContent);
 
         add(container);
     }
 
     private String getDiaryEntryTitle() {
-        return diaryentry.getTitle();
+        return diaryEntry.getTitle();
     }
 
-    private void openEditDialog(DiaryEntry diaryentry) {
+    private void openEditDialog(DiaryEntry diaryEntry) {
         Dialog dialog = new Dialog();
         TextField editField = new TextField("Content");
-        editField.setValue(diaryentry.getContent());
+        editField.setValue(diaryEntry.getContent());
         Button saveButton = new Button("Save", event -> {
-            diaryentry.setContent(editField.getValue());
-            diaryService.update(diaryentry.getId(), diaryentry);
-            updateGrid();
+            diaryEntry.setContent(editField.getValue());
+            diaryService.updateDiaryEntry(diaryEntry);
+            // Optionally update any grids or UI components that display diary entries
             dialog.close();
         });
         Button cancelButton = new Button("Cancel", event -> dialog.close());
         dialog.add(new VerticalLayout(editField));
-        dialog.getFooter().add(cancelButton);
-        dialog.getFooter().add(saveButton);
+        dialog.getFooter().add(cancelButton, saveButton);
         dialog.open();
     }
-
-
-}*/
+}
