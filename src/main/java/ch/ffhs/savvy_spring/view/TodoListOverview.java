@@ -47,6 +47,7 @@ public class TodoListOverview extends VerticalLayout {
             nameField.clear();
         });
 
+        grid.addClassName("grid");
         grid.setColumns("name");
         grid.addComponentColumn(todolist -> {
             Button editButton = new Button("Edit");

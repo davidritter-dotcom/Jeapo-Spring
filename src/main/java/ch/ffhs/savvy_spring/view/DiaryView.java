@@ -45,11 +45,13 @@ public class DiaryView extends VerticalLayout {
             DiaryEntry diary = new DiaryEntry();
             diary.setTitle(titleField.getValue());
             diary.setUser_id(principal.getName());
+            diary.setContent("");
             diaryService.createDiaryEntry(diary);
             updateGrid();
             titleField.clear();
         });
 
+        grid.addClassName("grid");
         grid.setColumns("title");
         grid.addComponentColumn(diary -> {
             Button editButton = new Button("Edit");

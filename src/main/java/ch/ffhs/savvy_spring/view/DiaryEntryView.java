@@ -7,6 +7,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,21 +24,28 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
 
     @Autowired
     private DiaryService diaryService;
+
     private DiaryEntry diaryEntry;
+    private Long parameter;
+
+    private Div displayedContent;
 
     @Override
     public void setParameter(BeforeEvent event, Long parameter) {
+        this.parameter = parameter;
         this.diaryEntry = diaryService.getDiaryEntry(parameter);
 
         if (diaryEntry == null) {
             // Handle case where diary entry with given ID doesn't exist
+            H2 error = new H2("is Null");
+            add(error);
             return;
         }
 
-        Div displayedContent = new Div(diaryEntry.getContent());
+        displayedContent = new Div(diaryEntry.getContent());
 
         Button editButton = new Button("Edit");
-        editButton.addClickListener(e -> openEditDialog(diaryEntry));
+        editButton.addClickListener(e -> openEdit(diaryEntry));
 
         HorizontalLayout actionButtonsLayout = new HorizontalLayout(editButton);
         actionButtonsLayout.setPadding(true);
@@ -47,7 +55,7 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
         actionButtonsLayout.getStyle().set("flex-grow", "1");
 
         Button backButton = new Button("Back");
-        backButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate(DiaryEntryView.class)));
+        backButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate(DiaryView.class)));
         backButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         HorizontalLayout backbuttonContainer = new HorizontalLayout(backButton, actionButtonsLayout);
@@ -72,7 +80,7 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
     private void openEditDialog(DiaryEntry diaryEntry) {
         Dialog dialog = new Dialog();
         TextField editField = new TextField("Content");
-        editField.setValue(diaryEntry.getContent());
+        //editField.setValue(diaryEntry.getContent());
         Button saveButton = new Button("Save", event -> {
             diaryEntry.setContent(editField.getValue());
             diaryService.updateDiaryEntry(diaryEntry);
@@ -83,5 +91,27 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
         dialog.add(new VerticalLayout(editField));
         dialog.getFooter().add(cancelButton, saveButton);
         dialog.open();
+    }
+
+    private void openEdit(DiaryEntry entry){
+        Dialog dialog = new Dialog();
+        TextField editField = new TextField("Content");
+        //editField.setValue(diaryEntry.getContent());
+        Button saveButton = new Button("Save", event -> {
+            entry.setContent(editField.getValue());
+            diaryService.updateDiaryEntry(entry);
+            // Optionally update any grids or UI components that display diary entries
+            updateContent();
+            dialog.close();
+        });
+        Button cancelButton = new Button("Cancel", event -> dialog.close());
+        dialog.add(new VerticalLayout(editField));
+        dialog.getFooter().add(cancelButton, saveButton);
+        dialog.open();
+    }
+
+    private void updateContent(){
+        this.diaryEntry = diaryService.getDiaryEntry(parameter);
+        displayedContent.setText(diaryEntry.getContent());
     }
 }

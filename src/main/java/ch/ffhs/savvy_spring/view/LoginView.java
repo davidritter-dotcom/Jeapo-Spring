@@ -3,6 +3,7 @@ package ch.ffhs.savvy_spring.view;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -17,30 +18,23 @@ public class LoginView extends VerticalLayout {
 
     public LoginView() {
         Anchor loginLink = new Anchor(OAUTH_URL, "Login with Google");
-        loginLink.getStyle().set("text-decoration","none");
-        loginLink.getStyle().set("font-size","2rem");
-        loginLink.getStyle().set("color","black");
-        loginLink.getStyle().set("font-weight","400");
+        loginLink.setId("login-link-lv");
 
         // Instruct Vaadin Router to ignore doing SPA handling
         loginLink.setRouterIgnore(true);
 
         H1 logo = new H1("Savvy");
-        logo.getStyle().set("margin","auto");
-        logo.getStyle().set("font-weight","500");
-        logo.getStyle().set("font-size","4rem");
-        logo.getStyle().set("margin-bottom","2rem");
+        logo.setId("logo-lv");
+
+        H2 slogan = new H2("Manage your tasks and cherish your memories with Savvy");
+        slogan.setId("slogan-lv");
+
         Div div = new Div();
-        div.getStyle().set("display","flex");
-        div.getStyle().set("flex-direction","column");
-        div.add(logo, loginLink);
+        div.setId("content-lv");
+        div.add(logo, slogan, loginLink);
 
         Div container = new Div();
-        container.getStyle().set("width","100vw");
-        container.getStyle().set("height","100vh");
-        container.getStyle().set("display","flex");
-        container.getStyle().set("justify-content","center");
-        container.getStyle().set("align-items","center");
+        container.setId("container-lv");
         container.add(div);
 
         add(container);
