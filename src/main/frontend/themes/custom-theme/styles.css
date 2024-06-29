@@ -64,3 +64,13 @@ body {
     box-shadow: var(--lumo-box-shadow-s);
     border-radius: var(--lumo-border-radius-l);
 }
+
+.diary-content {
+    border-radius: var(--lumo-border-radius-l);
+    background-color: rgba(232, 232, 232, 0.6);
+    padding: 1rem;
+    min-height: 40vh;
+    width: 100%;
+    color: black;
+    font-size: 1.2rem;
+}

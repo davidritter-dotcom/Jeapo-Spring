@@ -11,6 +11,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -37,18 +38,16 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
 
         if (diaryEntry == null) {
             // Handle case where diary entry with given ID doesn't exist
-            H2 error = new H2("is Null");
-            add(error);
             return;
         }
 
         displayedContent = new Div(diaryEntry.getContent());
+        displayedContent.addClassName("diary-content");
 
         Button editButton = new Button("Edit");
         editButton.addClickListener(e -> openEdit(diaryEntry));
 
         HorizontalLayout actionButtonsLayout = new HorizontalLayout(editButton);
-        actionButtonsLayout.setPadding(true);
         actionButtonsLayout.setAlignItems(Alignment.BASELINE);
         actionButtonsLayout.getStyle().set("display", "flex");
         actionButtonsLayout.getStyle().set("justify-content", "center");
@@ -68,7 +67,7 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
         VerticalLayout container = new VerticalLayout();
         container.getStyle().set("width", "80vw");
         container.getStyle().set("margin", "auto");
-        container.add(pageTitle, backbuttonContainer, displayedContent);
+        container.add(pageTitle, backbuttonContainer,actionButtonsLayout, displayedContent);
 
         add(container);
     }
@@ -95,8 +94,11 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
 
     private void openEdit(DiaryEntry entry){
         Dialog dialog = new Dialog();
-        TextField editField = new TextField("Content");
-        //editField.setValue(diaryEntry.getContent());
+        TextArea editField = new TextArea("Content");
+        editField.addClassName("text-field");
+        editField.setValue(entry.getContent());
+        editField.setMinHeight("40vh");
+        editField.setWidth("40vw");
         Button saveButton = new Button("Save", event -> {
             entry.setContent(editField.getValue());
             diaryService.updateDiaryEntry(entry);
