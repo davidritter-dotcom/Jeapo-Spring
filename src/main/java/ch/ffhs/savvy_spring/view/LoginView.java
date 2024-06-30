@@ -13,15 +13,16 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @PageTitle("Login")
 @AnonymousAllowed
 public class LoginView extends VerticalLayout {
-    // URL that Spring Security uses to connect to Google services
-    private static final String OAUTH_URL = "/oauth2/authorization/google";
+
+    private static final String AUTH0_OAUTH_URL = "/oauth2/authorization/okta";
 
     public LoginView() {
-        Anchor loginLink = new Anchor(OAUTH_URL, "Login with Google");
-        loginLink.setId("login-link-lv");
+
+        Anchor auth0LoginLink = new Anchor(AUTH0_OAUTH_URL, "Login with Auth0");
+        auth0LoginLink.setId("auth0-login-link-lv");
 
         // Instruct Vaadin Router to ignore doing SPA handling
-        loginLink.setRouterIgnore(true);
+        auth0LoginLink.setRouterIgnore(true);
 
         H1 logo = new H1("Savvy");
         logo.setId("logo-lv");
@@ -31,7 +32,7 @@ public class LoginView extends VerticalLayout {
 
         Div div = new Div();
         div.setId("content-lv");
-        div.add(logo, slogan, loginLink);
+        div.add(logo, slogan, auth0LoginLink);
 
         Div container = new Div();
         container.setId("container-lv");

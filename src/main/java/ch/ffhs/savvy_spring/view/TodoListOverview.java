@@ -12,6 +12,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 @Route(value = "todolists", layout = MainLayout.class)
+@PageTitle("Todo Lists")
 @PermitAll
 public class TodoListOverview extends VerticalLayout {
 
@@ -38,6 +40,7 @@ public class TodoListOverview extends VerticalLayout {
         OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
 
         Button addButton = new Button("Add Todo List");
+        addButton.setId("add-todo-list-button");
         addButton.addClickListener(e -> {
             Todolist todolist = new Todolist();
             todolist.setName(nameField.getValue());

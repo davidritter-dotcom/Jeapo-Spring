@@ -10,12 +10,26 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinServletRequest;
+import com.vaadin.flow.server.VaadinServletResponse;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.io.IOException;
 
 public class MainLayout extends AppLayout {
 
-    private static final String LOGOUT_SUCCESS_URL = "/";
+    @Value("${okta.oauth2.issuer}")
+    private String issuer;
+
+    @Value("${okta.oauth2.client-id}")
+    private String clientId;
+
     public MainLayout() {
         Header header = new Header();
         header.getStyle().set("display", "flex");
@@ -60,17 +74,32 @@ public class MainLayout extends AppLayout {
         diaryLink.getStyle().set("font-size","1.2rem");
         list.add(todoLink, diaryLink);
 
-        //Todo: Create a seperate user Session Bean to handle logout
-        Button logoutButton = new Button("Logout", click -> {
-            UI.getCurrent().getPage().setLocation(LOGOUT_SUCCESS_URL);
-            SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
-            logoutHandler.logout(
-                    VaadinServletRequest.getCurrent().getHttpServletRequest(), null,
-                    null);
-        });
+        //Possible Optimization: Create a separate user Session Bean to handle logout
+        Button logoutButton = getLogoutButton();
         logoutButton.getStyle().set("margin-right","1rem");
 
         header.add(layout, nav, logoutButton);
         addToNavbar(header);
+    }
+
+    private Button getLogoutButton() {
+        Button logoutButton = new Button("Logout");
+        logoutButton.addClickListener(
+                e -> {
+                    // Construct the base URL for redirection
+                    String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+                    String redirectUrl = issuer + "v2/logout?client_id=" + clientId + "&returnTo=" + baseUrl;
+
+                    // Perform logout using SecurityContextLogoutHandler
+                    HttpServletRequest request = VaadinServletRequest.getCurrent().getHttpServletRequest();
+                    HttpServletResponse response = VaadinServletResponse.getCurrent().getHttpServletResponse();
+
+                    SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+                    logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+
+                    getUI().ifPresent(ui -> ui.getPage().setLocation(redirectUrl));
+                }
+        );
+        return logoutButton;
     }
 }
