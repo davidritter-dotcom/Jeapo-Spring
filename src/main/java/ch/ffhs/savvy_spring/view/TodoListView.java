@@ -9,6 +9,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -85,7 +86,9 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
 
         VerticalLayout container = new VerticalLayout();
         container.addClassName("main-content-container");
-        container.add(pageTitle, backbuttonContainer, grid);
+        Div gridContainer = new Div(grid);
+        gridContainer.addClassName("grid-container");
+        container.add(pageTitle, backbuttonContainer, gridContainer);
 
         add(container);
         updateGrid();

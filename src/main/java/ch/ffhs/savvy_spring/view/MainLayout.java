@@ -37,6 +37,7 @@ public class MainLayout extends AppLayout {
 
         H1 title = new H1("Savvy");
         title.setId("main-logo");
+        title.getStyle().set("font-size","2rem");
         title.addClassNames(LumoUtility.Margin.Vertical.MEDIUM, LumoUtility.Margin.End.AUTO, LumoUtility.FontSize.LARGE);
         title.addClickListener(
                 e -> getUI().ifPresent(ui -> ui.navigate("/todolists"))

@@ -81,7 +81,9 @@ public class DiaryView extends VerticalLayout {
 
         VerticalLayout container = new VerticalLayout();
         container.setClassName("main-content-container");
-        container.add(pageTitle, addDiaryEntryLayout, grid);
+        Div gridContainer = new Div(grid);
+        gridContainer.addClassName("grid-container");
+        container.add(pageTitle, addDiaryEntryLayout, gridContainer);
 
         grid.addItemClickListener(event -> getUI().ifPresent(ui -> ui.navigate(DiaryEntryView.class, event.getItem().getEntryId())));
 

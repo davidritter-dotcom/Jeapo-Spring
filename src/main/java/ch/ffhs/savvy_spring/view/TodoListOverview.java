@@ -76,7 +76,9 @@ public class TodoListOverview extends VerticalLayout {
 
         VerticalLayout container = new VerticalLayout();
         container.setClassName("main-content-container");
-        container.add(pageTitle, addTodoListLayout, grid);
+        Div gridContainer = new Div(grid);
+        gridContainer.addClassName("grid-container");
+        container.add(pageTitle, addTodoListLayout, gridContainer);
 
         add(container);
         updateGrid();

@@ -2,6 +2,7 @@ package ch.ffhs.savvy_spring.service;
 
 import ch.ffhs.savvy_spring.model.DiaryEntry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,7 +17,8 @@ public class DiaryService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String BASE_URL = "http://localhost:8084/diary/";
+    @Value("${BASE_URL_SAVVY_JAKARTA}")
+    private String BASE_URL;
 
     public DiaryEntry[] getDiaryEntries(String userId) {
         String url = BASE_URL + "user/" + userId;
