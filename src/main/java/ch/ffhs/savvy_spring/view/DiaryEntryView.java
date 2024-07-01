@@ -2,17 +2,14 @@ package ch.ffhs.savvy_spring.view;
 
 import ch.ffhs.savvy_spring.model.DiaryEntry;
 import ch.ffhs.savvy_spring.service.DiaryService;
-import ch.ffhs.savvy_spring.view.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
@@ -36,11 +33,6 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
         this.parameter = parameter;
         this.diaryEntry = diaryService.getDiaryEntry(parameter);
 
-        if (diaryEntry == null) {
-            // Handle case where diary entry with given ID doesn't exist
-            return;
-        }
-
         displayedContent = new Div(diaryEntry.getContent());
         displayedContent.addClassName("diary-content");
 
@@ -48,25 +40,20 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
         editButton.addClickListener(e -> openEdit(diaryEntry));
 
         HorizontalLayout actionButtonsLayout = new HorizontalLayout(editButton);
-        actionButtonsLayout.setAlignItems(Alignment.BASELINE);
-        actionButtonsLayout.getStyle().set("display", "flex");
-        actionButtonsLayout.getStyle().set("justify-content", "center");
-        actionButtonsLayout.getStyle().set("flex-grow", "1");
+        actionButtonsLayout.setId("action-buttons-layout");
 
         Button backButton = new Button("Back");
         backButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate(DiaryView.class)));
         backButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         HorizontalLayout backbuttonContainer = new HorizontalLayout(backButton, actionButtonsLayout);
-        backbuttonContainer.getStyle().set("display", "flex");
-        backbuttonContainer.getStyle().set("width", "100%");
+        backbuttonContainer.addClassName("backbutton-container");
 
         H2 pageTitle = new H2(getDiaryEntryTitle());
         pageTitle.getStyle().set("margin", "auto");
 
         VerticalLayout container = new VerticalLayout();
-        container.getStyle().set("width", "80vw");
-        container.getStyle().set("margin", "auto");
+        container.setClassName("main-content-container");
         container.add(pageTitle, backbuttonContainer,actionButtonsLayout, displayedContent);
 
         add(container);
@@ -74,22 +61,6 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
 
     private String getDiaryEntryTitle() {
         return diaryEntry.getTitle();
-    }
-
-    private void openEditDialog(DiaryEntry diaryEntry) {
-        Dialog dialog = new Dialog();
-        TextField editField = new TextField("Content");
-        //editField.setValue(diaryEntry.getContent());
-        Button saveButton = new Button("Save", event -> {
-            diaryEntry.setContent(editField.getValue());
-            diaryService.updateDiaryEntry(diaryEntry);
-            // Optionally update any grids or UI components that display diary entries
-            dialog.close();
-        });
-        Button cancelButton = new Button("Cancel", event -> dialog.close());
-        dialog.add(new VerticalLayout(editField));
-        dialog.getFooter().add(cancelButton, saveButton);
-        dialog.open();
     }
 
     private void openEdit(DiaryEntry entry){
@@ -102,7 +73,6 @@ public class DiaryEntryView extends VerticalLayout implements HasUrlParameter<Lo
         Button saveButton = new Button("Save", event -> {
             entry.setContent(editField.getValue());
             diaryService.updateDiaryEntry(entry);
-            // Optionally update any grids or UI components that display diary entries
             updateContent();
             dialog.close();
         });

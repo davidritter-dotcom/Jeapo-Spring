@@ -18,7 +18,7 @@ public class LoginView extends VerticalLayout {
 
     public LoginView() {
 
-        Anchor auth0LoginLink = new Anchor(AUTH0_OAUTH_URL, "Login with Auth0");
+        Anchor auth0LoginLink = new Anchor(AUTH0_OAUTH_URL, "Login");
         auth0LoginLink.setId("auth0-login-link-lv");
 
         // Instruct Vaadin Router to ignore doing SPA handling

@@ -45,6 +45,7 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
             updateGrid();
         });
 
+        grid.addClassName("grid");
         grid.setColumns("content");
         grid.addComponentColumn(todo -> {
             Button editButton = new Button("Edit");
@@ -63,13 +64,9 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
             return deleteButton;
         }).setWidth("10rem").setFlexGrow(0).setHeader("Delete");
 
-        //add(new HorizontalLayout(contentField, addButton), grid);
-
         HorizontalLayout addTodoLayout = new HorizontalLayout();
         addTodoLayout.setPadding(true);
-        addTodoLayout.setAlignItems(Alignment.BASELINE);
-        addTodoLayout.getStyle().set("display","flex");
-        addTodoLayout.getStyle().set("justify-content","center");
+        addTodoLayout.setClassName("add-bar");
         addTodoLayout.getStyle().set("flex-grow","1");
         addTodoLayout.add(contentField, addButton);
 
@@ -79,8 +76,7 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
         );
         backButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         HorizontalLayout backbuttonContainer = new HorizontalLayout(backButton, addTodoLayout);
-        backbuttonContainer.getStyle().set("display","flex");
-        backbuttonContainer.getStyle().set("width","100%");
+        backbuttonContainer.addClassName("backbutton-container");
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
@@ -88,8 +84,7 @@ public class TodoListView extends VerticalLayout implements HasUrlParameter<Inte
         pageTitle.getStyle().set("margin","auto");
 
         VerticalLayout container = new VerticalLayout();
-        container.getStyle().set("width","80vw");
-        container.getStyle().set("margin","auto");
+        container.addClassName("main-content-container");
         container.add(pageTitle, backbuttonContainer, grid);
 
         add(container);

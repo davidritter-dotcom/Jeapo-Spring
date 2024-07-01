@@ -8,9 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Theme(value = "custom-theme")
 @SpringBootApplication
 public class SavvySpringApplication implements AppShellConfigurator {
-
 	public static void main(String[] args) {
 		SpringApplication.run(SavvySpringApplication.class, args);
 	}
-
 }

@@ -7,7 +7,6 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -35,10 +34,7 @@ public class TodoListOverview extends VerticalLayout {
     public TodoListOverview(TodoListService todoListService) {
         this.todoListService = todoListService;
 
-        //Todo: put this in separate class
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
-
+        nameField.setId("add-todo-list-input");
         Button addButton = new Button("Add Todo List");
         addButton.setId("add-todo-list-button");
         addButton.addClickListener(e -> {
@@ -53,10 +49,10 @@ public class TodoListOverview extends VerticalLayout {
         grid.addClassName("grid");
         grid.setColumns("name");
         grid.addComponentColumn(todolist -> {
-            Button editButton = new Button("Edit");
+            Button editButton = new Button("Change Name");
             editButton.addClickListener(e -> openEditDialog(todolist));
             return editButton;
-        }).setWidth("10rem").setFlexGrow(0).setHeader("Change Name");
+        }).setWidth("13rem").setFlexGrow(0).setHeader("Change Name");
 
         grid.addComponentColumn(todolist -> {
             Button deleteButton = new Button("Delete");
@@ -72,18 +68,14 @@ public class TodoListOverview extends VerticalLayout {
 
         HorizontalLayout addTodoListLayout = new HorizontalLayout();
         addTodoListLayout.setPadding(true);
-        addTodoListLayout.setAlignItems(Alignment.BASELINE);
-        addTodoListLayout.getStyle().set("display","flex");
-        addTodoListLayout.getStyle().set("justify-content","center");
-        addTodoListLayout.getStyle().set("width","100%");
+        addTodoListLayout.addClassName("add-bar");
         addTodoListLayout.add(nameField, addButton);
 
         H2 pageTitle = new H2("Todo Lists");
         pageTitle.getStyle().set("margin","auto");
 
         VerticalLayout container = new VerticalLayout();
-        container.getStyle().set("width","80vw");
-        container.getStyle().set("margin","auto");
+        container.setClassName("main-content-container");
         container.add(pageTitle, addTodoListLayout, grid);
 
         add(container);
@@ -97,6 +89,7 @@ public class TodoListOverview extends VerticalLayout {
     private void openEditDialog(Todolist todolist) {
         Dialog dialog = new Dialog();
         TextField editField = new TextField("Name");
+        editField.setId("edit-input-field");
         editField.setValue(todolist.getName());
         Button saveButton = new Button("Save", event -> {
             todolist.setName(editField.getValue());
@@ -104,6 +97,7 @@ public class TodoListOverview extends VerticalLayout {
             updateGrid();
             dialog.close();
         });
+        saveButton.setId("edit-save-button");
         Button cancelButton = new Button("Cancel", event -> dialog.close());
         dialog.add(new VerticalLayout(editField));
         dialog.getFooter().add(cancelButton);

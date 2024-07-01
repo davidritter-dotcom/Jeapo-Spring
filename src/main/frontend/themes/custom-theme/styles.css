@@ -59,9 +59,15 @@ body {
     margin: 2rem 0;
 }
 
+#auth0-login-link-lv:hover {
+    transform: scale(1.2);
+    transition: 0.3s;
+}
+
 .grid {
     box-shadow: var(--lumo-box-shadow-s);
     border-radius: var(--lumo-border-radius-l);
+    min-height: 50vh;
 }
 
 .diary-content {
@@ -73,3 +79,107 @@ body {
     color: black;
     font-size: 1.2rem;
 }
+
+#action-buttons-layout {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    align-items: baseline;
+}
+
+.backbutton-container {
+    display: flex;
+    width: 100%;
+}
+
+.add-bar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: baseline;
+}
+
+.main-content-container {
+    max-width: 80vw;
+    margin: auto;
+}
+
+#main-header {
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+#main-nav {
+    flex-grow: 5;
+    display: flex;
+    justify-content: center;
+}
+
+#nav-list {
+    display: flex;
+    padding-left: 0;
+    gap: 6rem;
+}
+
+.nav-link {
+    color: black;
+    text-decoration: none;
+    font-size: 1.3rem;
+}
+
+.nav-link:hover {
+    text-decoration: none;
+    transform: scale(1.2);
+    transition: 0.3s;
+}
+
+#logout-button {
+    cursor: pointer;
+}
+
+#main-logo {
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+vaadin-button {
+    cursor: pointer;
+}
+
+vaadin-grid::part(first-column-cell):hover {
+    background-color: #E8E8E8;
+    cursor: pointer;
+    border-radius: var(--lumo-border-radius-l);
+}
+
+vaadin-grid::part(first-column-cell) {
+    background-color: #f5f5f5;
+    border-radius: var(--lumo-border-radius-l);
+    margin: 2px 4px 2px 4px;
+}
+
+#user-info {
+    color: black;
+    font-size: 1.2rem;
+    font-weight: 480;
+    align-self: end;
+}
+
+#user-info-title {
+    color: black;
+    font-size: 1rem;
+    font-weight: bold;
+    align-self: end;
+}
+
+#user-profile {
+    margin: 0 2rem;
+    padding: 0;
+    gap: 0;
+    width: 20% !important;
+    overflow: hidden;
+}
+

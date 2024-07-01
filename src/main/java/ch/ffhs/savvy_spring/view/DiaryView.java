@@ -45,6 +45,7 @@ public class DiaryView extends VerticalLayout {
             DiaryEntry diary = new DiaryEntry();
             diary.setTitle(titleField.getValue());
             diary.setUser_id(principal.getName());
+            System.out.println(principal.getName());
             diary.setContent("");
             diaryService.createDiaryEntry(diary);
             updateGrid();
@@ -54,10 +55,10 @@ public class DiaryView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setColumns("title");
         grid.addComponentColumn(diary -> {
-            Button editButton = new Button("Edit");
+            Button editButton = new Button("Change Title");
             editButton.addClickListener(e -> openEditDialog(diary));
             return editButton;
-        }).setWidth("10rem").setFlexGrow(0).setHeader("Change Name");
+        }).setWidth("13rem").setFlexGrow(0).setHeader("Change Title");
 
         grid.addComponentColumn(diaryEntry -> {
             Button deleteButton = new Button("Delete");
@@ -72,18 +73,14 @@ public class DiaryView extends VerticalLayout {
 
         HorizontalLayout addDiaryEntryLayout = new HorizontalLayout();
         addDiaryEntryLayout.setPadding(true);
-        addDiaryEntryLayout.setAlignItems(Alignment.BASELINE);
-        addDiaryEntryLayout.getStyle().set("display", "flex");
-        addDiaryEntryLayout.getStyle().set("justify-content", "center");
-        addDiaryEntryLayout.getStyle().set("width", "100%");
+        addDiaryEntryLayout.setClassName("add-bar");
         addDiaryEntryLayout.add(titleField, addButton);
 
         H2 pageTitle = new H2("Diary");
         pageTitle.getStyle().set("margin", "auto");
 
         VerticalLayout container = new VerticalLayout();
-        container.getStyle().set("width", "80vw");
-        container.getStyle().set("margin", "auto");
+        container.setClassName("main-content-container");
         container.add(pageTitle, addDiaryEntryLayout, grid);
 
         grid.addItemClickListener(event -> getUI().ifPresent(ui -> ui.navigate(DiaryEntryView.class, event.getItem().getEntryId())));
